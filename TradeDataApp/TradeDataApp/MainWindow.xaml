@@ -1,0 +1,48 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TradeDataApp"
+        xmlns:ViewModel="clr-namespace:TradeDataApp.ViewModel" x:Class="TradeDataApp.MainWindow"
+        mc:Ignorable="d"
+        Title="Trade Data Reader Application" Height="350" Width="525">
+    <Grid x:Name="mainGrid" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Stretch">
+        <Grid.DataContext>
+            <ViewModel:MainViewModel/>
+        </Grid.DataContext>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ListView x:Name="fileListView" Grid.Column="0" Grid.Row="0" Margin="0,0,0,0" ItemsSource="{Binding FileReadingResults}">
+        <ListView.View>
+            <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding FileName, Mode=OneWay}" Header="FileName" Width="{Binding ActualWidth, ElementName=fileListView, Mode=OneWay}"/>
+            </GridView>
+        </ListView.View>
+        </ListView>
+
+        <ListView x:Name="tradeDataListView" Grid.Column="1" Grid.Row="0" Margin="10,0,0,0" 
+                  IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding SelectedItem.TradeDataList, ElementName=fileListView, Mode=OneWay}">
+            <ListView.View>
+                <GridView AllowsColumnReorder="False" >
+                    <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date, Mode=OneWay, StringFormat=d}" Width="70"/>
+                    <GridViewColumn Header="Open" DisplayMemberBinding="{Binding Open, Mode=OneWay}" Width="60"/>
+                    <GridViewColumn Header="High" DisplayMemberBinding="{Binding High, Mode=OneWay}" Width="60"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Low, Mode=OneWay}" Header="Low" Width="60"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Close, Mode=OneWay}" Header="Close" Width="60"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Volume, Mode=OneWay}" Header="Volume" Width="70"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <TextBox x:Name="statusTextBox" Grid.ColumnSpan="2"  Grid.Row="1" MinLines="6" Margin="0,10,0,0" TextWrapping="Wrap" IsEnabled="False"
+                 Text="{Binding SelectedItem.Status, Mode=OneWay, ElementName=fileListView}" IsManipulationEnabled="False"/>
+
+    </Grid>
+</Window>
